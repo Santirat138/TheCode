@@ -1,0 +1,17 @@
+Recursive function to delete k-th node from linked list
+Last Updated : 10 Jan, 2023
+Given a singly linked list, delete a node at the kth position without using the loop.
+
+Examples: 
+
+Input : list = 9->8->3->5->2->1 
+          k = 4
+Output : 9->8->3->2->1 
+
+Input  : list = 0->0->1->6->2->3 
+            k = 3
+Output : 0->0->6->2->3  
+We recursively reduce the value of k. When k reaches 1, we delete the current node and return the next current node as a new node.
+When the function returns, we link the returned node to the next previous node. 
+
+https://www.geeksforgeeks.org/recursive-function-delete-k-th-node-linked-list/

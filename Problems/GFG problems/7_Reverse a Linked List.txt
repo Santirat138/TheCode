@@ -1,0 +1,13 @@
+Given a linked list, the task is to reverse the linked list by changing the links between nodes.
+
+Examples: 
+
+Input: head: 1 -> 2 -> 3 -> 4 -> NULL
+Output: head: 4 -> 3 -> 2 -> 1 -> NULL
+Explanation: Reversed Linked List:
+
+Input: head: 1 -> 2 -> 3 -> 4 -> 5 -> NULL
+Output: head: 5 -> 4 -> 3 -> 2 -> 1 -> NULL
+Explanation: Reversed Linked List:
+
+https://www.geeksforgeeks.org/reverse-a-linked-list/

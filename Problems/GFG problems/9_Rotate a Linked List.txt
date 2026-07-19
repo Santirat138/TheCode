@@ -1,0 +1,17 @@
+Rotate a Linked List
+Given a singly linked list and an integer k, the task is to rotate the linked list to the left by k places.
+
+Examples:
+
+Input: linked list = 10 -> 20 -> 30 -> 40 -> 50, k = 4
+Output: 50 -> 10 -> 20 -> 30 -> 40
+
+xplanation: After rotating the linked list to the left by 4 places, the 5th node, i.e node 50 becomes the head of the linked list and next pointer of node 50 points to node 10.
+
+Input: linked list = 10 -> 20 -> 30 -> 40, k = 6
+Output: 30 -> 40 -> 10 -> 20 
+
+Explanation: After rotating the linked list to the left by 6 places (same as rotating by 2 places as (k % len) = (6 % 4 = 2)) ,
+             the 3rd node, i.e node 30 becomes the head of the linked list and next pointer of node 40 points to node 10.
+
+https://www.geeksforgeeks.org/rotate-a-linked-list/
