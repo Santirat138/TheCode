@@ -1,6 +1,8 @@
 #include<iostream>
 #include <fstream>
+#include <sstream>
 using namespace std;
+string filePath="C:\\Users\\WIN11\\Desktop\\code\\GitHubCode\\code\\Cpp\\HistoryTimeline\\TEST_FILE.txt";
 //------------------ class
 class Date{
     public:
@@ -32,8 +34,8 @@ class EventList{
             cout<<eventAmount<<" events"<<endl;
             for(EventNode* c=head;c!=NULL;c=(*c).next){
                 if((*c).date.month!=0){
-                    cout<<(*c).date.month<<"/"<<(*c).date.year<<": "<<(*c).details<<endl;
-                    //cout<<(*c).details<<", ";
+                    //cout<<(*c).date.month<<"/"<<(*c).date.year<<": "<<(*c).details<<endl;
+                    cout<<"- "<<(*c).details<<endl;
                 }
             }
             cout<<endl;
@@ -62,8 +64,9 @@ class YearNode{
             }
         }
         void show(){
-            for(int i=0;i<13;i++){
+            for(int i=1;i<13;i++){
                 if((*monthTable[i]).head!=NULL){
+                    cout<<i<<'/'<<year<<": ";
                     (*monthTable[i]).show();
                 }
             }
@@ -116,13 +119,34 @@ class YearList{
             }
         }      
 };
+//------------------ functions
+YearList readFile(){
+    YearList yearList;
+    ifstream reader(filePath);
+    string line;
+    Date date;
+    while(getline(reader, line)){
+        stringstream ss(line);
+        string m, y, detail;
+        getline(ss, m, '|');
+        getline(ss, y, '|');
+        getline(ss, detail);
+        date.month=stoi(m);
+        date.year=stoi(y);
+        yearList.add(date, detail);
+    }
+    reader.close();
+    return yearList;
+}
 void mainFunc(){
     string cmd;
-    YearList yearList;
+    YearList yearList=readFile();
     int m, y;
     Date date;
     do{
+        cin>>cmd;
         if(cmd=="search"){
+            cin>>m>>y;
             date.month=m;
             date.year=y;
             (*yearList.search(date)).show();
@@ -130,6 +154,8 @@ void mainFunc(){
         else if(cmd=="add"){
             string newDetail;
             cin>>m>>y>>newDetail;
+            date.month=m;
+            date.year=y;
             yearList.add(date, newDetail);
         }
         else if(cmd=="show"){
@@ -140,27 +166,5 @@ void mainFunc(){
 }
 //------------------ main
 int main(){
-    YearList yearList;
-    Date date1;
-    Date date2;
-    Date date3;
-    Date date4;
-    Date date5;
-    date1.month=2;
-    date1.year=2001;
-    date2.month=2;
-    date2.year=2001;
-    date3.month=5;
-    date3.year=2012;
-    date4.month=8;
-    date4.year=2012;
-    date5.month=8;
-    date5.year=2012;
-    yearList.add(date1, "e1");
-    yearList.add(date2, "e2");
-    yearList.add(date3, "e3");
-    yearList.add(date4, "e4");
-    yearList.add(date5, "e5");
-    yearList.show();
-    (*yearList.search(date2)).show();
+    mainFunc();
 }
