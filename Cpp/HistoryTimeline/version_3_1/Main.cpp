@@ -1,9 +1,8 @@
 #include<iostream>
-#include <cstdlib>
 #include <fstream>
 #include <sstream>
 using namespace std;
-string filePath="C:\\Users\\WIN11\\Desktop\\code\\TheCode\\Cpp\\HistoryTimeline\\version_3_1\\TEST_FILE.txt";
+string filePath="C:\\Users\\WIN11\\Desktop\\code\\GitHubCode\\code\\Cpp\\HistoryTimeline\\TEST_FILE.txt";
 //------------------ class
 class Date{
     public:
@@ -41,15 +40,6 @@ class EventList{
             }
             cout<<endl;
         }
-        string sent(){
-            string text;
-            for(EventNode* c=head;c!=NULL;c=(*c).next){
-                if((*c).date.month!=0){
-                    text=to_string((*c).date.month)+"|"+to_string((*c).date.year)+"|"+(*c).details+'\n';
-                }
-            }
-            return text;
-        }
         void add(Date date, string detailIn){
             eventAmount++;
             EventNode* newNode=new EventNode();
@@ -81,15 +71,6 @@ class YearNode{
                 }
             }
             cout<<endl;
-        }
-        string sent(){
-            string text;
-            for(int i=1;i<13;i++){
-                if((*monthTable[i]).head!=NULL){
-                    text=(*monthTable[i]).sent();
-                }
-            }
-            return text;
         }
         void add(Date dateIn, string detailIn){
             (*monthTable[dateIn.month]).add(dateIn, detailIn);
@@ -136,17 +117,7 @@ class YearList{
             else{
                 (*targetNode).add(dateIn, detailIn);
             }
-        }
-        void sort(){
-            for(YearNode* c1=head;(*c1).next!=NULL;c1=(*c1).next){
-                for(YearNode* c2=(*c1).next;c2!=NULL;c2=(*c2).next){
-                    if(((*c1).year)>((*c2).year)){
-                        swap(c1, c2);
-                    }
-                }
-            }
-        }
-        
+        }      
 };
 //------------------ functions
 YearList readFile(){
@@ -167,14 +138,6 @@ YearList readFile(){
     reader.close();
     return yearList;
 }
-void updateFile(YearList newList){
-    newList.sort();
-    ofstream writer(filePath);
-    for(YearNode* c=newList.head;c!=NULL;c=(*c).next){
-        writer<<(*c).sent();
-    }
-    writer.close();
-}
 void mainFunc(){
     string cmd;
     YearList yearList=readFile();
@@ -194,7 +157,6 @@ void mainFunc(){
             date.month=m;
             date.year=y;
             yearList.add(date, newDetail);
-            updateFile(yearList);
         }
         else if(cmd=="show"){
             yearList.show();

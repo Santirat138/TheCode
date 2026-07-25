@@ -146,7 +146,7 @@ class TimelineList{
 };
 //------------------ main
 int main(){
-	//system("chcp 65001");
+	system("chcp 65001");
 	TimelineList TEST_timeline;
     Details worldDetails[EVENT_CAPACITY];
     string zone;
