@@ -1,0 +1,2 @@
+food : rice
+drug : para
