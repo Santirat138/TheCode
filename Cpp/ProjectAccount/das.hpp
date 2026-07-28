@@ -2,8 +2,19 @@
 #include<fstream>
 #define CAPACITY 10
 using namespace std;
-string path="C:\\Users\\WIN11\\Desktop\\code\\TheCode\\Cpp\\ProjectAccount\\type.txt";
+string path="C:\\Users\\WIN11\\Desktop\\code\\TheCode\\Cpp\\ProjectAccount\\data.csv";
 //------------------ class
+class Date{
+    public:
+        int day;
+        int month;
+};
+class Info{
+    public:
+        string type;
+        string name;
+        int money;
+};
 class InExNode{     // Income and Expense
     public:
         string name;
@@ -27,7 +38,13 @@ class InExLL{
             amount=0;
             head=NULL;
         }
+        void readFile(){
+            
+        }
         void show(string name){
+            if(amount==0){
+                return ;
+            }
             cout<<"Type: "<<name<<", Amount: "<<amount<<endl;
             for(InExNode* c=head;c!=NULL;c=(*c).next){
                 cout<<(*c).name<<" = "<<(*c).money<<endl;
@@ -50,15 +67,11 @@ class TypeArray{
         void readFile(){
             ifstream reader(path);
             string typeName;
+            getline(reader, typeName);
             while(reader>>typeName){
                 array[lastIdx++]=typeName;
             }
             reader.close();
-            cout<<"Type:"<<endl;
-            for(int i=0;i<lastIdx;i++){
-                cout<<array[i]<<" ";
-            }
-            cout<<endl;
         }
         int search(string tName){
             for(int i=0;i<lastIdx;i++){

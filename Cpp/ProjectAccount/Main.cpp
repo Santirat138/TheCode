@@ -20,7 +20,7 @@ class TableType{
         string getTypeName(int keyIdx){
             return tArray.array[keyIdx];
         }
-        void sort(InExLL* array[]){
+        /* void sort(InExLL* array[]){
             InExLL* data[tArray.lastIdx];
             for(int a=0;a<tArray.lastIdx;a++){
                 data[a]=new InExLL(a);
@@ -38,7 +38,7 @@ class TableType{
             for(int a=0;a<tArray.lastIdx;a++){
                 array[a]=data[a];
             }
-        }
+        } */
         int setMoneySum(){
             int moneySum=0;
             for(int i=0;i<tArray.lastIdx;i++){
@@ -46,14 +46,14 @@ class TableType{
             }
             return moneySum;
         }
-        void add(string typeIn, string name, int money){
-            int idx=getKey(typeIn);
+        void add(Info infoIn){
+            int idx=getKey(infoIn.type);
             if(idx==-1){
-                cout<<"Not found "<<name<<"."<<endl;
-                tArray.add(typeIn);
-                idx=getKey(typeIn);
+                cout<<"Not found "<<infoIn.name<<"."<<endl;
+                tArray.add(infoIn.type);
+                idx=getKey(infoIn.type);
             }
-            (*table[idx]).add(name, money);
+            (*table[idx]).add(infoIn.name, infoIn.money);
         }
         void showAll(){
             for(int i=0;i<tArray.lastIdx;i++){
@@ -65,19 +65,6 @@ class TableType{
             cout<<"All money sum: "<<setMoneySum()<<endl;
         }
 };
-
-/* 1	มกราคม	31
-2	กุมภาพันธ์	28 หรือ 29
-3	มีนาคม	31
-4	เมษายน	30
-5	พฤษภาคม	31
-6	มิถุนายน	30
-7	กรกฎาคม	31
-8	สิงหาคม	31
-9	กันยายน	30
-10	ตุลาคม	31
-11	พฤศจิกายน	30
-12	ธันวาคม	31 */
 class Day{
     public:
         TableType table;
@@ -85,23 +72,91 @@ class Day{
         Day(){
             moneySum=0;
         }
-        void showTable(){
-            table.showAll();
+        void add(Info infoIn){
+            table.add(infoIn);
         }
-        void add(string type, string name, int money){
-            table.add(type, name, money);
+};
+class Month{
+    public:
+        int monthNum;
+        int lastDay;
+        Day day[31];
+        void createMonth(int mIn){
+            monthNum=mIn;
+            if((monthNum==1)||(monthNum==3)||(monthNum==5)||(monthNum==7)||(monthNum==8)||(monthNum==10)||(monthNum==12)){
+                lastDay=31;
+            }
+            else if((monthNum==4)||(monthNum==6)||(monthNum==10)||(monthNum==11)){
+                lastDay=30;
+            }
+            else if((monthNum==2)){
+                lastDay=28;
+            }
+            else{
+                lastDay=0;
+            }
+        }
+};
+class Main{
+    public:
+        int currDay;
+        Month allMonth[12];
+        Main(){
+            for(int i=1;i<13;i++){
+                allMonth[i].createMonth(i);
+            }
+        }
+        void add(Date currDate, Info infoIn){
+            if(currDate.day<=allMonth[currDate.month].lastDay){
+                allMonth[currDate.month].day[currDate.day].add(infoIn);
+            }
+            else{
+                cout<<currDate.day<<" > "<<allMonth[currDate.month].lastDay<<"."<<endl;
+            }
+        }
+        void show(Date date){
+            for(int i=1;i<allMonth[date.month].lastDay;i++){
+                if(allMonth[date.month].day[i].moneySum>0){
+                    allMonth[date.month].day[i].table.showAll();
+                }
+            }
         }
 };
 //------------------ main
 int main(){
-    TableType t;
-    t.add("food", "rice", 20);
-    t.add("food", "chip", 15);
-    t.add("food", "banana", 50);
-    t.add("drug", "para", 10);
-    t.add("sale", "gold", 50000);
-    t.add("media", "games1", 5000);
-    t.add("sale", "gold", 60000);
-    t.add("media", "games2", 2000);
-    t.showAll();
+    Main t;
+    Date date[5];
+    Info info[5];
+    date[0].day=1;
+    date[0].month=10;
+    date[1].day=2;
+    date[1].month=10;
+    date[2].day=4;
+    date[2].month=10;
+    date[3].day=6;
+    date[3].month=10;
+    date[4].day=8;
+    date[4].month=10;
+
+    info[0].money=5;
+    info[0].name="item A";
+    info[0].type="type1";
+    info[1].money=10;
+    info[1].name="item B";
+    info[1].type="type3";
+    info[2].money=900;
+    info[2].name="item C";
+    info[2].type="type1";
+    info[3].money=5000;
+    info[3].name="item D";
+    info[3].type="type3";
+    info[4].money=150;
+    info[4].name="item E";
+    info[4].type="type3";
+    for(int i=0;i<5;i++){
+        t.add(date[i], info[i]);
+    }
+    for(int i=0;i<4;i++){
+        t.show(date[i]);
+    }
 }

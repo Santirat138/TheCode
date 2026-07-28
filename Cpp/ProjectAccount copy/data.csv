@@ -1,0 +1,8 @@
+day,month,type,name,price
+2,10,type1,item1,5
+2,10,type1,item2,10
+6,10,type2,item3,15
+6,10,type1,item4,20
+6,12,type2,item5,25
+7,12,type3,item6,30
+7,12,type1,item7,35
