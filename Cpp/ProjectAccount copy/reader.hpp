@@ -18,8 +18,7 @@ class Account{
         }
         void read(){
             ifstream reader(path);
-            string line;
-            int i=0;        
+            string line;     
             Date date;
             Info info;
             if(!reader){
@@ -47,14 +46,25 @@ class Account{
             }
             reader.close();
         }
-        void write(TableArray* newTArray[]){
+        void write(){
             ofstream writer(path);
             if(!writer){
                 cout<<"Can't open."<<endl;
                 return ;
             }
             writer<<row<<endl;
-            
+            for(int m=1;m<MONTH_CAPACITY;m++){
+                for(int d=0;d<(*tArray[m]).lastIdx;d++){
+                    int day=(*tArray[m]).tableArray[d].date.day;
+                    int month=(*tArray[m]).tableArray[d].date.month;
+                    for(RecNode* cNode=(*(*tArray[m]).tableArray[d].recLL).head;cNode!=NULL;cNode=(*cNode).next){
+                        writer<<day<<","<<month<<","<<(*(*tArray[m]).tableArray[d].recLL).typeName<<","<<(*cNode).name<<","<<(*cNode).price<<endl;
+                    }
+                }
+            }
             writer.close();
+        }
+        void add(Date date, Info info){
+            (*tArray[date.month]).add(date, info);
         }
 };

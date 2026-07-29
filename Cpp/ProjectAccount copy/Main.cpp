@@ -1,23 +1,27 @@
 #include"reader.hpp"
-//      class
-class Main{
-    public:
-        Account account;
-        Main(){
-            account.read();
+//      functions
+void mainFunc(){
+    Account acc;
+    string cmd;
+    acc.read();
+    do{
+        cout<<"cmd: ";
+        cin>>cmd;
+        if(cmd=="add"){
+            Date date;
+            Info info;
+            cin>>date.day>>date.month>>info.type>>info.name>>info.price;
+            acc.add(date, info);
+            //acc.sort();
+            acc.write();
         }
-        void add(Date date, Info info){
-            (*account.tArray[date.month]).add(date, info);
+        else if(cmd=="show"){
+            acc.show();
         }
-        void sort(){
-            account.sort();
-        }
-        void show(){
-            account.show();
-        }
-};
+    }
+    while(cmd!="exit");
+}
 //      main
 int main(){
-    Main m;
-    m.show();
+    mainFunc();
 }
