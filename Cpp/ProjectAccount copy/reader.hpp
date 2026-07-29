@@ -6,8 +6,16 @@ string path="C:\\Users\\WIN11\\Desktop\\code\\TheCode\\Cpp\\ProjectAccount copy\
 
 class Account{
     public:
-        TableArray* tArray[13];
+        TableArray* tArray[MONTH_CAPACITY];
         string row;
+        void sort(){
+            sortTableArray(tArray);
+        }
+        void show(){
+            for(int i=1;i<MONTH_CAPACITY;i++){
+                (*tArray[i]).show();
+            }
+        }
         void read(){
             ifstream reader(path);
             string line;
@@ -38,11 +46,8 @@ class Account{
                 (*tArray[stoi(month)]).add(date, info);
             }
             reader.close();
-            for(int i=1;i<13;i++){
-                (*tArray[i]).show();
-            }
         }
-        void write(){
+        void write(TableArray* newTArray[]){
             ofstream writer(path);
             if(!writer){
                 cout<<"Can't open."<<endl;

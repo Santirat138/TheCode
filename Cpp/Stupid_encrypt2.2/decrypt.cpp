@@ -70,7 +70,7 @@ string decrypt(string ciphertext, Node* keyHead){
 }
 //------------------ main
 int main(){
-    string filePath="C:\\Users\\Santirat\\Desktop\\code\\GitHubCode\\code\\Cpp\\Stupid_encrypt2.0.2\\text.txt";
+    string filePath="C:\\Users\\WIN11\\Desktop\\code\\GitHubCode\\code\\Cpp\\Stupid_encrypt2.2\\text.txt";
     string ciphertext=readFile(filePath);
     LinkedList keyLL;
     string key;

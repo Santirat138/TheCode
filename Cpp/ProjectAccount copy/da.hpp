@@ -1,5 +1,6 @@
 #include<iostream>
 #define CAPACITY 10
+#define MONTH_CAPACITY 13
 using namespace std;
 //      class
 class Date{
@@ -43,9 +44,9 @@ class RecLL{
         void show(){
             cout<<"Type "<<typeName<<endl<<endl;
             for(RecNode* cNode=head;cNode!=NULL;cNode=(*cNode).next){
-                cout<<(*cNode).name<<" "<<(*cNode).price<<endl;
+                cout<<"  - "<<(*cNode).name<<" "<<(*cNode).price<<endl;
             }
-            cout<<"\t"<<endl<<"money sum "<<getMoneySum()<<endl<<"-----------------"<<endl;
+            cout<<"\t"<<endl<<"Type money sum "<<getMoneySum()<<endl<<"-----------------"<<endl;
         }
         void add(Info info){
             RecNode* newNode=new RecNode(info);
@@ -97,9 +98,11 @@ class RecTable{
 //      month, array of hash table
 class TableArray{
     public:
+        int monthNumber;
         int lastIdx;
         RecTable tableArray[31];
         TableArray(int monthNum){
+            monthNumber=monthNum;
             if((monthNum==1)||(monthNum==3)||(monthNum==5)||(monthNum==7)||(monthNum==8)||(monthNum==10)||(monthNum==12)){
                 lastIdx=31;
             }
@@ -115,16 +118,27 @@ class TableArray{
         }
         void show(){
             for(int i=0;i<lastIdx;i++){
-                if(tableArray[i].date.day!=0){
+                if(tableArray[i].lastIdx!=0){
                     cout<<"\t"<<tableArray[i].date.day<<" / "<<tableArray[i].date.month<<endl;
                     tableArray[i].show();
-                    cout<<"<><><><><><><><><>"<<endl;
+                    cout<<"<><><><><><><><><>"<<endl<<endl;
                 }
             }
-            cout<<endl;
         }
         void add(Date date, Info info){
             tableArray[date.day].date=date;
             tableArray[date.day].addRecLL(info);
         }
 };
+//      functions
+void sortTableArray(TableArray* month[]){
+    for(int i=1;i<MONTH_CAPACITY-1;i++){
+        int minM=i;
+        for(int j=i+1;j<MONTH_CAPACITY;j++){
+            if((*month[j]).monthNumber<(*month[minM]).monthNumber){
+                minM=j;
+            }
+        }
+        swap(*month[i], *month[minM]);
+    }
+}
