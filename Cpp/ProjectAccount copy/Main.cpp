@@ -12,7 +12,7 @@ void mainFunc(){
             Info info;
             cin>>date.day>>date.month>>info.type>>info.name>>info.price;
             acc.add(date, info);
-            //acc.sort();
+            acc.sort();
             acc.write();
         }
         else if(cmd=="show"){

@@ -47,32 +47,26 @@ class Account{
             reader.close();
         }
         void write(){
-            /* ofstream writer(path);
+            ofstream writer(path);
             if(!writer){
                 cout<<"Can't open."<<endl;
                 return ;
             } 
-            writer<<row<<endl; */
+            writer<<row<<endl;
             for(int m=1;m<MONTH_CAPACITY;m++){
                 for(int i=0;i<(*tArray[m]).lastIdx;i++){
-                    //string name=(*(*(*tArray[m]).tableArray[i].recLL).head).name;
-                    //int price=(*(*(*tArray[m]).tableArray[i].recLL).head).price;
-                    //cout<<m<<","<<i<<endl;
-                    if((*(*tArray[m]).tableArray[i].recLL).head!=NULL){
-                        RecNode* node=(*(*tArray[m]).tableArray[i].recLL).head;
-                        cout<<"\t"<<m<<","<<i<<","<<(*(*tArray[m]).tableArray[i].recLL).typeName<<",";
-                        cout<<(*node).name<<","<<(*node).price<<endl;
+                    int t=0;
+                    while((*tArray[m]).tableArray[i].recLL[t].head!=NULL){
+                        RecNode* node=(*tArray[m]).tableArray[i].recLL[t].head;
+                        while(node!=NULL){
+                            writer<<m<<","<<i<<","<<(*tArray[m]).tableArray[i].recLL[t].typeName<<","<<(*node).name<<","<<(*node).price<<endl;
+                            node=(*node).next;
+                        }
+                        t++;
                     }
                 }
-                /*for(int d=0;d<(*tArray[m]).lastIdx;d++){
-                    int day=(*tArray[m]).tableArray[d].date.day;
-                    int month=(*tArray[m]).tableArray[d].date.month;
-                    for(RecNode* cNode=(*(*tArray[m]).tableArray[d].recLL).head;cNode!=NULL;cNode=(*cNode).next){
-                        cout<<day<<","<<month<<","<<(*(*tArray[m]).tableArray[d].recLL).typeName<<","<<(*cNode).name<<","<<(*cNode).price<<endl;
-                    }
-                }*/
             }
-            //writer.close();
+            writer.close();
         }
         void add(Date date, Info info){
             (*tArray[date.month]).add(date, info);
