@@ -1,8 +1,7 @@
 #include"da.hpp"
 #include<fstream>
-#include<sstream>
 using namespace std;
-string path="C:\\Users\\WIN11\\Desktop\\code\\TheCode\\Cpp\\ProjectAccount copy\\data.csv";
+string path="C:\\Users\\WIN11\\Desktop\\code\\TheCode\\Cpp\\ProjectAccount\\data.csv";
 
 class Account{
     public:
@@ -29,7 +28,7 @@ class Account{
             for(int i=1;i<13;i++){
                 tArray[i]=new TableArray(i);
             }
-            while(reader>>line){
+            while(getline(reader, line)){
                 string day, month, type, name, price;
                 stringstream ss(line);
                 getline(ss, day, ',');
@@ -59,10 +58,15 @@ class Account{
                     while((*tArray[m]).tableArray[i].recLL[t].head!=NULL){
                         RecNode* node=(*tArray[m]).tableArray[i].recLL[t].head;
                         while(node!=NULL){
-                            writer<<m<<","<<i<<","<<(*tArray[m]).tableArray[i].recLL[t].typeName<<","<<(*node).name<<","<<(*node).price<<endl;
+                            writer<<i<<","<<m<<","<<(*tArray[m]).tableArray[i].recLL[t].typeName<<","<<(*node).name<<","<<(*node).price<<endl;
                             node=(*node).next;
                         }
-                        t++;
+                        if(t<CAPACITY){
+                            t++;
+                        }
+                        else{
+                            cout<<"Type is full."<<endl;
+                        }
                     }
                 }
             }
@@ -70,5 +74,8 @@ class Account{
         }
         void add(Date date, Info info){
             (*tArray[date.month]).add(date, info);
+        }
+        void deleteData(Date date, Info info){
+            (*tArray[date.month]).deleteData(date, info);
         }
 };

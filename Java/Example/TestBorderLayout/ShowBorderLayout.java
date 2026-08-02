@@ -1,7 +1,7 @@
-package MyCode.Java.Example.TestBorderLayout;
+package TheCode.Java.Example.TestBorderLayout;
+import java.awt.BorderLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import java.awt.BorderLayout;
 
 public class ShowBorderLayout extends JFrame{
     public ShowBorderLayout() {

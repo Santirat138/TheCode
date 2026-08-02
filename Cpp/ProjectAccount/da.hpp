@@ -1,4 +1,5 @@
 #include<iostream>
+#include<sstream>
 #define CAPACITY 10
 #define MONTH_CAPACITY 13
 using namespace std;
@@ -13,6 +14,19 @@ class Info{
         string type="-";
         string name="-";
         int price=0;
+        void setInfo(string dataIn){
+            stringstream ss(dataIn);
+            string token;
+            string info[3];
+            int i=0;
+            while (getline(ss, token, ',')) {
+                cout<<token<<endl;
+                info[i++]=token;
+            }
+            type=info[0];
+            name=info[1];
+            price=stoi(info[2]);
+        }
 };
 class RecNode{
     public:
@@ -52,6 +66,18 @@ class RecLL{
             RecNode* newNode=new RecNode(info);
             (*newNode).next=head;
             head=newNode;
+        }
+        RecNode* deleteNode(RecNode* currNode, string target){
+            if(currNode==NULL){
+                return NULL;
+            }
+            if((*currNode).name==target){
+                RecNode* temp=(*currNode).next;
+                (*currNode).next=NULL;
+                return temp;
+            }
+            (*currNode).next=deleteNode((*currNode).next, target);
+            return currNode;
         }
 };
 
@@ -93,6 +119,14 @@ class RecTable{
             recLL[key].typeName=info.type;
             recLL[key].add(info);
         }
+        void deleteNode(Info info){
+            int key=getKey(info.type);
+            recLL[key].head=recLL[key].deleteNode(recLL[key].head, info.name);
+            if(recLL[key].head==NULL){
+                cout<<"Not found "<<info.type<<","<<info.name<<endl;
+                return ;
+            }
+        }
 };
 
 //      month, array of hash table
@@ -100,7 +134,7 @@ class TableArray{
     public:
         int monthNumber;
         int lastIdx;
-        RecTable tableArray[31];
+        RecTable tableArray[32];
         TableArray(int monthNum){
             monthNumber=monthNum;
             if((monthNum==1)||(monthNum==3)||(monthNum==5)||(monthNum==7)||(monthNum==8)||(monthNum==10)||(monthNum==12)){
@@ -109,7 +143,7 @@ class TableArray{
             else if((monthNum==4)||(monthNum==6)||(monthNum==9)||(monthNum==11)){
                 lastIdx=30;
             }
-            else if((monthNum==2)){
+            else if(monthNum==2){
                 lastIdx=28;
             }
             else{
@@ -126,13 +160,24 @@ class TableArray{
             }
         }
         void add(Date date, Info info){
+            if(date.day>lastIdx){
+                cout<<date.day<<" can't more than "<<lastIdx<<"."<<endl;
+                return ;
+            }
             tableArray[date.day].date=date;
             tableArray[date.day].addRecLL(info);
+        }
+        void deleteData(Date date, Info info){
+            if(date.day>lastIdx){
+                cout<<date.day<<" can't more than "<<lastIdx<<"."<<endl;
+                return ;
+            }
+            tableArray[date.day].deleteNode(info);
         }
 };
 //      functions
 void sortTableArray(TableArray* month[]){
-    for(int i=1;i<MONTH_CAPACITY-1;i++){
+    for(int i=1;i<MONTH_CAPACITY;i++){
         int minM=i;
         for(int j=i+1;j<MONTH_CAPACITY;j++){
             if((*month[j]).monthNumber<(*month[minM]).monthNumber){
