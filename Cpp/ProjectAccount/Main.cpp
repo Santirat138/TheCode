@@ -10,10 +10,7 @@ void mainFunc(){
         if(cmd=="add"){
             Date date;
             Info info;
-            string textIn, token;
-            cin>>date.day>>date.month;
-            getline(cin>>ws, textIn);
-            info.setInfo(textIn);
+            cin>>date.day>>date.month>>info.type>>info.name>>info.price;
             cout<<"**********"<<endl;
             if(date.month>=13){
                 cout<<"Month can't more than 12."<<endl;

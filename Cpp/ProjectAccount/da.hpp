@@ -14,19 +14,6 @@ class Info{
         string type="-";
         string name="-";
         int price=0;
-        void setInfo(string dataIn){
-            stringstream ss(dataIn);
-            string token;
-            string info[3];
-            int i=0;
-            while (getline(ss, token, ',')) {
-                cout<<token<<endl;
-                info[i++]=token;
-            }
-            type=info[0];
-            name=info[1];
-            price=stoi(info[2]);
-        }
 };
 class RecNode{
     public:
