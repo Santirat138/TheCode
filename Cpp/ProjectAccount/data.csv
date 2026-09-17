@@ -1,7 +1,9 @@
 day,month,type,name,price
-2,8,drink,soda_water,10
-2,8,drink,soda_water,10
 2,8,drink,ener+G_wake_up,20
 2,8,drink,ener+G_wake_up,20
-2,8,food,noodle,100
+2,8,drink,soda_water,10
+2,8,drink,soda_water,10
 2,8,food,cow_meat,200
+2,8,food,noodle,100
+4,8,food,meat,700
+4,8,travel,grab,200

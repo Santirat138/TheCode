@@ -10,6 +10,7 @@ void mainFunc(){
         if(cmd=="add"){
             Date date;
             Info info;
+            cout<<"day month type name price"<<endl;
             cin>>date.day>>date.month>>info.type>>info.name>>info.price;
             cout<<"**********"<<endl;
             if(date.month>=13){
