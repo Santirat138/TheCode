@@ -2,7 +2,7 @@
 #include <fstream>
 #include <sstream>
 using namespace std;
-string filePath="C:\\Users\\WIN11\\Desktop\\code\\TheCode\\Cpp\\HistoryTimeline\\version_3_1\\TEST_FILE.txt";
+string filePath="C:\\Users\\WIN11\\Desktop\\code\\TheCode\\Cpp\\ProjectHistoryTimeline\\version_3_1\\TEST_FILE.csv";
 //------------------ class
 class Date{
     public:
@@ -15,8 +15,7 @@ class Date{
 };
 class EventNode{
     public:
-        Date date;
-        string details;
+        string details[3];
         EventNode* next;
         EventNode(){
             next=NULL;
@@ -33,9 +32,8 @@ class EventList{
         void show(){
             cout<<eventAmount<<" events"<<endl;
             for(EventNode* c=head;c!=NULL;c=(*c).next){
-                if((*c).date.month!=0){
-                    //cout<<(*c).date.month<<"/"<<(*c).date.year<<": "<<(*c).details<<endl;
-                    cout<<"- "<<(*c).details<<endl;
+                if((*c).details[0]!="0"){
+                    cout<<"- "<<(*c).details[2]<<endl;
                 }
             }
             cout<<endl;
@@ -43,8 +41,9 @@ class EventList{
         void add(Date date, string detailIn){
             eventAmount++;
             EventNode* newNode=new EventNode();
-            (*newNode).date=date;
-            (*newNode).details=detailIn;
+            (*newNode).details[0]=date.month;
+            (*newNode).details[1]=date.year;
+            (*newNode).details[2]=detailIn;
             if(head!=NULL){
                 (*newNode).next=head;
             }
@@ -117,12 +116,29 @@ class YearList{
             else{
                 (*targetNode).add(dateIn, detailIn);
             }
-        }      
+        }
+        /* void sort(){
+            for(YearNode* nodeA=head;(*nodeA).next!=NULL;nodeA=(*nodeA).next){
+                YearNode* minNode=nodeA;
+                for(YearNode* nodeB=(*nodeA).next;nodeB!=NULL;nodeB=(*nodeB).next){
+                    if(((*minNode).year)>(*nodeB).year){
+                        minNode=nodeB;
+                    }
+                }
+                swap((*nodeA).year, (*minNode).year);
+                swap((*nodeA).monthTable[0], (*minNode).monthTable[0]);
+                swap((*nodeA).monthTable[1], (*minNode).monthTable[1]);
+                swap((*nodeA).monthTable[2], (*minNode).monthTable[2]);
+            }
+        }  */ 
 };
 //------------------ functions
 YearList readFile(){
     YearList yearList;
     ifstream reader(filePath);
+    if(!reader){
+        cout<<"Can't open."<<endl;
+    }
     string line;
     Date date;
     while(getline(reader, line)){
@@ -138,6 +154,24 @@ YearList readFile(){
     reader.close();
     return yearList;
 }
+void writeFile(Date dateIn, string detailIn){
+    ofstream writer(filePath, ios::app);
+    writer<<dateIn.month<<"|"<<dateIn.year<<"|"<<detailIn<<endl;
+    writer.close();
+}
+void writeFile2(YearList listIn){
+    ofstream writer(filePath);
+    for(YearNode* cNode=listIn.head;cNode!=NULL;cNode=(*cNode).next){
+        if((*cNode).monthTable!=NULL){
+            for(int month=1;month<13;month++){
+                for(EventNode* cEvent=(*(*cNode).monthTable[month]).head;cEvent!=NULL;cEvent=(*cEvent).next){
+                    writer<<month<<"|"<<(*cNode).year<<"|"<<(*cEvent).details[2]<<endl;
+                }
+            }
+        }
+    }
+    writer.close();
+}
 void mainFunc(){
     string cmd;
     YearList yearList=readFile();
@@ -146,17 +180,41 @@ void mainFunc(){
     do{
         cin>>cmd;
         if(cmd=="search"){
-            cin>>m>>y;
+            YearNode* temp;
+            cout<<"Search month: ";
+            cin>>m;
+            cout<<"Search year: ";
+            cin>>y;
             date.month=m;
             date.year=y;
-            (*yearList.search(date)).show();
+            temp=yearList.search(date);
+            if(temp!=NULL){
+                (*temp).show();
+                for(int cM=1;cM<13;cM++){
+                    if(cM==m){
+                        (*(*temp).monthTable[cM]).show();
+                        break;
+                    }
+                }
+            }
+            else{
+                cout<<"Not found."<<endl;
+            }
         }
         else if(cmd=="add"){
             string newDetail;
-            cin>>m>>y>>newDetail;
+            cout<<"month: ";
+            cin>>m;
+            cout<<"year: ";
+            cin>>y;
+            cin.ignore();
+            cout<<"New details: ";
+            getline(cin, newDetail);
             date.month=m;
             date.year=y;
             yearList.add(date, newDetail);
+            //yearList.sort();
+            writeFile2(yearList);
         }
         else if(cmd=="show"){
             yearList.show();
