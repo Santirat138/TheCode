@@ -117,20 +117,18 @@ class YearList{
                 (*targetNode).add(dateIn, detailIn);
             }
         }
-        /* void sort(){
-            for(YearNode* nodeA=head;(*nodeA).next!=NULL;nodeA=(*nodeA).next){
-                YearNode* minNode=nodeA;
+        void sort(){
+            for(YearNode* nodeA=head;(*(*nodeA).next).next!=NULL;nodeA=(*nodeA).next){
+                YearNode* keyNode=nodeA;
                 for(YearNode* nodeB=(*nodeA).next;nodeB!=NULL;nodeB=(*nodeB).next){
-                    if(((*minNode).year)>(*nodeB).year){
-                        minNode=nodeB;
+                    if((*keyNode).year>(*nodeB).year){
+                        keyNode=nodeB;
                     }
                 }
-                swap((*nodeA).year, (*minNode).year);
-                swap((*nodeA).monthTable[0], (*minNode).monthTable[0]);
-                swap((*nodeA).monthTable[1], (*minNode).monthTable[1]);
-                swap((*nodeA).monthTable[2], (*minNode).monthTable[2]);
+                swap((*nodeA).monthTable, (*keyNode).monthTable);
+                swap((*nodeA).year, (*keyNode).year);
             }
-        }  */ 
+        }
 };
 //------------------ functions
 YearList readFile(){
@@ -154,12 +152,7 @@ YearList readFile(){
     reader.close();
     return yearList;
 }
-void writeFile(Date dateIn, string detailIn){
-    ofstream writer(filePath, ios::app);
-    writer<<dateIn.month<<"|"<<dateIn.year<<"|"<<detailIn<<endl;
-    writer.close();
-}
-void writeFile2(YearList listIn){
+void writeFile(YearList listIn){
     ofstream writer(filePath);
     for(YearNode* cNode=listIn.head;cNode!=NULL;cNode=(*cNode).next){
         if((*cNode).monthTable!=NULL){
@@ -187,11 +180,29 @@ void mainFunc(){
             cin>>y;
             date.month=m;
             date.year=y;
+            int prevM=m-1;
+            int nextM=m+1;
             temp=yearList.search(date);
+            while(prevM>1){
+                if((*(*temp).monthTable[prevM]).eventAmount>0){
+                    cout<<"\tBefore "<<m<<"/"<<y<<endl<<prevM<<"/"<<y<<endl;
+                    (*(*temp).monthTable[prevM]).show();
+                    break;
+                }
+                prevM--;
+            }
+            while(nextM<12){
+                if((*(*temp).monthTable[nextM]).eventAmount>0){
+                    cout<<"\tAfter "<<m<<"/"<<y<<endl<<nextM<<"/"<<y<<endl;
+                    (*(*temp).monthTable[nextM]).show();
+                    break;
+                }
+                nextM++;
+            }
             if(temp!=NULL){
-                (*temp).show();
                 for(int cM=1;cM<13;cM++){
                     if(cM==m){
+                        cout<<"\t**** Found ****"<<endl;
                         (*(*temp).monthTable[cM]).show();
                         break;
                     }
@@ -213,8 +224,8 @@ void mainFunc(){
             date.month=m;
             date.year=y;
             yearList.add(date, newDetail);
-            //yearList.sort();
-            writeFile2(yearList);
+            yearList.sort();
+            writeFile(yearList);
         }
         else if(cmd=="show"){
             yearList.show();
