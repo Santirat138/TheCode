@@ -49,6 +49,24 @@ class EventList{
             }
             head=newNode;
         }
+        void deleteEvent(int eventNum){
+            for(int i=1;i<=eventAmount;i++){
+                if(i==eventNum){
+                    if(i==1){
+                        EventNode* temp=head;
+                        head=(*head).next;
+                        (*temp).next=NULL;
+                    }
+                    else if(i==eventAmount){
+
+                    }
+                    else{
+
+                    }
+                    eventAmount--;
+                }
+            }
+        }
 };
 class YearNode{
     public:
@@ -115,6 +133,12 @@ class YearList{
             }
             else{
                 (*targetNode).add(dateIn, detailIn);
+            }
+        }
+        void deleteNode(Date targetDate){
+            YearNode* targetYear=search(targetDate);
+            if(targetYear!=NULL){
+                (*targetYear).monthTable[targetDate.month].
             }
         }
         void sort(){
@@ -226,6 +250,9 @@ void mainFunc(){
             yearList.add(date, newDetail);
             yearList.sort();
             writeFile(yearList);
+        }
+        else if(cmd=="delete"){
+            
         }
         else if(cmd=="show"){
             yearList.show();
