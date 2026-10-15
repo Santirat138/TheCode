@@ -193,6 +193,15 @@ class YearList{
             }
         }
 };
+class Timeline{
+    public:
+        YearList yearList[4];
+        Timeline(){
+            ifstream pathReader("C:\\Users\\WIN11\\Desktop\\code\\TheCode\\Cpp\\ProjectHistoryTimeline\\version_3_1\\FilePath.txt");
+            
+            pathReader.close();
+        }
+};
 //------------------ functions
 YearList readFile(){
     YearList yearList;
@@ -228,7 +237,8 @@ void writeFile(YearList listIn){
     }
     writer.close();
 }
-void mainFunc(){
+//------------------ main
+int main(){
     string cmd;
     YearList yearList=readFile();
     int m, y;
@@ -291,21 +301,18 @@ void mainFunc(){
             writeFile(yearList);
         }
         else if(cmd=="delete"){
-            cout<<"Search month: ";
+            cout<<"Delete month: ";
             cin>>m;
-            cout<<"Search year: ";
+            cout<<"Delete year: ";
             cin>>y;
             date.month=m;
             date.year=y;
             yearList.deleteNode(date);
+            writeFile(yearList);
         }
         else if(cmd=="show"){
             yearList.show();
         }
     }
     while(cmd!="exit");
-}
-//------------------ main
-int main(){
-    mainFunc();
 }
