@@ -71,7 +71,7 @@ string removeRepeatChar(LinkedList* keyLL, string plaintext){
 
 //------------------ main
 int main(){
-    string filePath="C:\\Users\\WIN11\\Desktop\\code\\GitHubCode\\code\\Cpp\\Stupid_encrypt2.2\\text.txt";
+    string filePath="C:\\Users\\WIN11\\Desktop\\code\\TheCode\\Cpp\\Stupid_encrypt2.2\\text.txt";
     LinkedList wordLL=readFile(filePath);
     LinkedList wordTableLL[wordLL.nodeAmount];
     LinkedList charLL;
