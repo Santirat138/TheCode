@@ -8,6 +8,8 @@ try:
         result.append(data.rstrip("\n"))
     print(textList)
     print(result)
+    print(result[0])
+    print(result[1])
     for msg in result:
         print(msg)
 except IOError as e:
