@@ -51,18 +51,45 @@ def reader():
         ll.addLast(newText)
     return ll
 
-def makeBin(llIn):
-    newLL=LL()
+def writer(llIn):
+    file=open(path, 'w')
     currNode=llIn.head
     while currNode!=None:
-        for idx in range(0, len(currNode.text), +1):
-            newLL.addLast(str(bin(ord(currNode.text[idx]))[2:]))
+        file.write(currNode.text+" ")
         currNode=currNode.next
-    return newLL
+    file.close()
 
+class EncryptMaker:
+    plainTextLL=LL()
+    binLL=LL()
+    cipherLL=LL()
+    finalKey=""
+    def makeBin(self):
+        currNode=self.plainTextLL.head
+        while currNode!=None:
+            for idx in range(0, len(currNode.text), +1):
+                self.binLL.addLast(str(bin(ord(currNode.text[idx]))[2:]))
+            currNode=currNode.next
 
-
-#       main
-mainLL=reader()
-numLL=makeBin(mainLL)
-numLL.show()
+    def removeDuplicate(self):
+        currNode=self.binLL.head
+        while currNode!=None:
+            key=0
+            currIdx=0
+            compareIdx=0
+            newText=""
+            newKey=""
+            while(compareIdx<len(currNode.text)):
+                if(currNode.text[currIdx]==currNode.text[compareIdx]):
+                    compareIdx=compareIdx+1
+                    key=key+1
+                else:
+                    newText=newText+currNode.text[currIdx]
+                    newKey=newKey+str(key)
+                    currIdx=compareIdx
+                    key=0
+            newText=newText+currNode.text[currIdx]
+            newKey=newKey+str(key)
+            self.finalKey=self.finalKey+newKey+" "
+            self.cipherLL.addLast(newText)
+            currNode=currNode.next
