@@ -11,4 +11,11 @@ button1=Button(frame, text="button1", width=12, height=2)
 button1.pack(padx=30, pady=30)
 button2=Button(root, text="button2", width=15, height=2)
 button2.pack(padx=150, pady=30)
+
+root2=Tk()
+root2.title("GUI2")
+root2.geometry("500x500")
+root2.option_add('*font', 'tahoma 10 bold')
+
 root.mainloop()
+root2.mainloop()
