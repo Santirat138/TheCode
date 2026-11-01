@@ -1,1 +1,1 @@
-80
+button2.pack(padx=150, pady=30)

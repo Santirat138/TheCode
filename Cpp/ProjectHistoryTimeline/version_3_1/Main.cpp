@@ -193,19 +193,10 @@ class YearList{
             }
         }
 };
-class Timeline{
-    public:
-        YearList yearList[4];
-        Timeline(){
-            ifstream pathReader("C:\\Users\\WIN11\\Desktop\\code\\TheCode\\Cpp\\ProjectHistoryTimeline\\version_3_1\\FilePath.txt");
-            
-            pathReader.close();
-        }
-};
 //------------------ functions
-YearList readFile(){
+YearList readFile(string filePathIn){
     YearList yearList;
-    ifstream reader(filePath);
+    ifstream reader(filePathIn);
     if(!reader){
         cout<<"Can't open."<<endl;
     }
@@ -237,6 +228,34 @@ void writeFile(YearList listIn){
     }
     writer.close();
 }
+//      class
+class Timeline{
+    public:
+        string path="C:\\Users\\WIN11\\Desktop\\code\\TheCode\\Cpp\\ProjectHistoryTimeline\\version_3_1\\FilePath.txt";
+        YearList yearList[5];
+        string pathArray[5];
+        int pathSize=0;
+        Timeline(){
+            ifstream pathReader(path);
+            while(getline(pathReader, pathArray[pathSize])){
+                cout<<"Read "<<pathArray[pathSize++]<<"\n";
+            }
+            pathReader.close();
+        }
+        string selectZone(){
+            for(int idx=0;idx<pathSize;idx++){
+                cout<<idx<<". "<<pathArray[idx]<<endl;
+            }
+            int idxZ;
+            cout<<"Enter index of zone: ";
+            cin>>idxZ;
+            if(idxZ>=pathSize){
+                return "NULL";
+            }
+            return pathArray[idxZ];
+        }
+        
+};
 //------------------ main
 int main(){
     string cmd;

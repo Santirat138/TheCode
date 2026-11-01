@@ -1,6 +1,6 @@
 #include"reader.hpp"
-//      functions
-void mainFunc(){
+//      main
+int main(){
     Account acc;
     string cmd;
     acc.read();
@@ -41,8 +41,4 @@ void mainFunc(){
         }
     }
     while(cmd!="exit");
-}
-//      main
-int main(){
-    mainFunc();
 }
