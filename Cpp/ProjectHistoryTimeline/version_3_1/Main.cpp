@@ -215,8 +215,8 @@ YearList readFile(string filePathIn){
     reader.close();
     return yearList;
 }
-void writeFile(YearList listIn){
-    ofstream writer(filePath);
+void writeFile(YearList listIn, string pathIn){
+    ofstream writer(pathIn);
     for(YearNode* cNode=listIn.head;cNode!=NULL;cNode=(*cNode).next){
         if((*cNode).monthTable!=NULL){
             for(int month=1;month<13;month++){
@@ -231,14 +231,13 @@ void writeFile(YearList listIn){
 //      class
 class Timeline{
     public:
-        string path="C:\\Users\\WIN11\\Desktop\\code\\TheCode\\Cpp\\ProjectHistoryTimeline\\version_3_1\\FilePath.txt";
         YearList yearList[5];
         string pathArray[5];
         int pathSize=0;
         Timeline(){
-            ifstream pathReader(path);
+            ifstream pathReader("C:\\Users\\WIN11\\Desktop\\code\\TheCode\\Cpp\\ProjectHistoryTimeline\\version_3_1\\FilePath.txt");
             while(getline(pathReader, pathArray[pathSize])){
-                cout<<"Read "<<pathArray[pathSize++]<<"\n";
+                pathSize++;
             }
             pathReader.close();
         }
@@ -249,9 +248,10 @@ class Timeline{
             int idxZ;
             cout<<"Enter index of zone: ";
             cin>>idxZ;
-            if(idxZ>=pathSize){
-                return "NULL";
+            if((idxZ==-1)||(idxZ>=pathSize)){
+                return "null";
             }
+
             return pathArray[idxZ];
         }
         
@@ -259,78 +259,95 @@ class Timeline{
 //------------------ main
 int main(){
     string cmd;
-    YearList yearList=readFile();
+    Timeline timeline=Timeline();
     int m, y;
     Date date;
+    bool isSelectPath=false;
     do{
+        
+        string path=timeline.selectZone();
+        YearList yearList=readFile(path);
+        if(path!="null"){
+            isSelectPath=true;
+        }
+        else{
+            isSelectPath=false;
+            path=timeline.selectZone();
+        }
+        cout<<"cmd: ";
         cin>>cmd;
-        if(cmd=="search"){
-            YearNode* temp;
-            cout<<"Search month: ";
-            cin>>m;
-            cout<<"Search year: ";
-            cin>>y;
-            date.month=m;
-            date.year=y;
-            int prevM=m-1;
-            int nextM=m+1;
-            temp=yearList.search(date);
-            while(prevM>1){
-                if((*(*temp).monthTable[prevM]).eventAmount>0){
-                    cout<<"\tBefore "<<m<<"/"<<y<<endl<<prevM<<"/"<<y<<endl;
-                    (*(*temp).monthTable[prevM]).show();
-                    break;
-                }
-                prevM--;
-            }
-            while(nextM<12){
-                if((*(*temp).monthTable[nextM]).eventAmount>0){
-                    cout<<"\tAfter "<<m<<"/"<<y<<endl<<nextM<<"/"<<y<<endl;
-                    (*(*temp).monthTable[nextM]).show();
-                    break;
-                }
-                nextM++;
-            }
-            if(temp!=NULL){
-                for(int cM=1;cM<13;cM++){
-                    if(cM==m){
-                        cout<<"\t**** Found ****"<<endl;
-                        (*(*temp).monthTable[cM]).show();
+        if(isSelectPath==true){
+            if(cmd=="search"){
+                YearNode* temp;
+                cout<<"Search month: ";
+                cin>>m;
+                cout<<"Search year: ";
+                cin>>y;
+                date.month=m;
+                date.year=y;
+                int prevM=m-1;
+                int nextM=m+1;
+                temp=yearList.search(date);
+                while(prevM>1){
+                    if((*(*temp).monthTable[prevM]).eventAmount>0){
+                        cout<<"\tBefore "<<m<<"/"<<y<<endl<<prevM<<"/"<<y<<endl;
+                        (*(*temp).monthTable[prevM]).show();
                         break;
                     }
+                    prevM--;
+                }
+                while(nextM<12){
+                    if((*(*temp).monthTable[nextM]).eventAmount>0){
+                        cout<<"\tAfter "<<m<<"/"<<y<<endl<<nextM<<"/"<<y<<endl;
+                        (*(*temp).monthTable[nextM]).show();
+                        break;
+                    }
+                    nextM++;
+                }
+                if(temp!=NULL){
+                    for(int cM=1;cM<13;cM++){
+                        if(cM==m){
+                            cout<<"\t**** Found ****"<<endl;
+                            (*(*temp).monthTable[cM]).show();
+                            break;
+                        }
+                    }
+                }
+                else{
+                    cout<<"Not found."<<endl;
                 }
             }
-            else{
-                cout<<"Not found."<<endl;
+            else if(cmd=="add"){
+                string newDetail;
+                cout<<"month: ";
+                cin>>m;
+                cout<<"year: ";
+                cin>>y;
+                cin.ignore();
+                cout<<"New details: ";
+                getline(cin, newDetail);
+                date.month=m;
+                date.year=y;
+                yearList.add(date, newDetail);
+                yearList.sort();
+                writeFile(yearList, path);
+            }
+            else if(cmd=="delete"){
+                cout<<"Delete month: ";
+                cin>>m;
+                cout<<"Delete year: ";
+                cin>>y;
+                date.month=m;
+                date.year=y;
+                yearList.deleteNode(date);
+                writeFile(yearList, path);
+            }
+            else if(cmd=="show"){
+                yearList.show();
             }
         }
-        else if(cmd=="add"){
-            string newDetail;
-            cout<<"month: ";
-            cin>>m;
-            cout<<"year: ";
-            cin>>y;
-            cin.ignore();
-            cout<<"New details: ";
-            getline(cin, newDetail);
-            date.month=m;
-            date.year=y;
-            yearList.add(date, newDetail);
-            yearList.sort();
-            writeFile(yearList);
-        }
-        else if(cmd=="delete"){
-            cout<<"Delete month: ";
-            cin>>m;
-            cout<<"Delete year: ";
-            cin>>y;
-            date.month=m;
-            date.year=y;
-            yearList.deleteNode(date);
-            writeFile(yearList);
-        }
-        else if(cmd=="show"){
-            yearList.show();
+        else{
+            cout<<"Not select path."<<endl;
         }
     }
     while(cmd!="exit");
